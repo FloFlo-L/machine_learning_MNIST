@@ -98,7 +98,7 @@ def main():
     test(model, test_loader, perm)
 
     # Sauvegarde du modèle entraîné
-    torch.save(model.state_dict(), "../../model/convnet_mnist.pt")
+    torch.save(model.state_dict(), "../../models/mnist-0.0.1.pt")
 
 if __name__ == "__main__":
     main()

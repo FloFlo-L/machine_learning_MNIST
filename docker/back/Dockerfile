@@ -1,14 +1,8 @@
-FROM python:3.12.3
-
+# docker/back/Dockerfile
+FROM mnist-base:latest
 WORKDIR /app
-
-COPY requirements.txt .
-
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY src/app/main.py .
-COPY src/model ./model
-
+ENV PYTHONPATH=/app/src
+COPY src ./src
+WORKDIR /app/src/app
 EXPOSE 8000
-
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

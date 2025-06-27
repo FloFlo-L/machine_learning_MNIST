@@ -1,4 +1,11 @@
 services:
+  base:
+    build:
+      context: .
+      dockerfile: docker/base/Dockerfile
+    image: mnist-base:latest
+    container_name: mnist-base
+
   backend:
     build:
       context: .
@@ -8,6 +15,8 @@ services:
       - "8000:8000"
     volumes:
       - ./model:/app/model
+    depends_on:
+      - base
     restart: unless-stopped
 
   frontend:
@@ -19,6 +28,4 @@ services:
       - "8501:8501"
     depends_on:
       - backend
-    environment:
-      - API_URL=http://backend:8000/api/v1/predict
     restart: unless-stopped

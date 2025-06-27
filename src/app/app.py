@@ -5,7 +5,7 @@ import numpy as np
 import requests
 import io
 
-API_URL = "http://localhost:8000/api/v1/predict"
+API_URL = "http://mnist-backend:8000/api/v1/predict"
 
 st.markdown(
     """

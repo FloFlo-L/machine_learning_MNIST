@@ -8,8 +8,7 @@ import io
 import sys
 import os
 
-# Add the path to the model module
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+# Import the ConvNet class from the model module
 from model.model import ConvNet
 
 # Initialize FastAPI
@@ -37,7 +36,7 @@ def load_model():
             MODEL = ConvNet(input_size=(1, 28, 28), n_kernels=6, output_size=10)
             
             # Load the saved weights
-            model_path = os.path.join(os.path.dirname(__file__), '../../model/convnet_mnist.pt')
+            model_path = os.path.join(os.path.dirname(__file__), '../../model/mnist-0.0.1.pt')
             MODEL.load_state_dict(torch.load(model_path, map_location=DEVICE))
             MODEL.to(DEVICE)
             MODEL.eval()
@@ -60,22 +59,16 @@ def preprocess_image(image_bytes: bytes) -> np.ndarray:
     try:
         # Open the image with PIL
         image = Image.open(io.BytesIO(image_bytes))
-        
         # Convert to grayscale
         image = image.convert('L')
-        
         # Resize to 28x28
         image = image.resize((28, 28))
-        
         # Convert to numpy array
         image_array = np.array(image, dtype=np.float32)
-        
         # Normalize between 0 and 1
         image_array = image_array / 255.0
-        
         # Apply the same normalization as during training
         image_array = (image_array - 0.1307) / 0.3081
-        
         return image_array
         
     except Exception as e:
@@ -88,29 +81,23 @@ def predict(image_array: np.ndarray, model: torch.nn.Module) -> dict:
     try:
         # Convert to PyTorch tensor
         tensor = torch.from_numpy(image_array).float()
-        
         # Add batch and channel dimensions: (1, 1, 28, 28)
         tensor = tensor.unsqueeze(0).unsqueeze(0)
-        
         # Send to the device
         tensor = tensor.to(DEVICE)
-        
         # Prediction
         with torch.no_grad():
             logits = model(tensor)
             probabilities = F.softmax(logits, dim=1)
             predicted_class = torch.argmax(logits, dim=1).item()
             confidence = probabilities[0][predicted_class].item()
-        
         # Return the result as a dictionary
         result = {
             "predicted_digit": int(predicted_class),
             "confidence": float(confidence),
             "probabilities": probabilities[0].cpu().numpy().tolist()
         }
-        
         return result
-        
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erreur lors de la prédiction: {str(e)}")
 
@@ -136,16 +123,12 @@ async def predict_digit(file: UploadFile = File(...)):
     try:
         # Read the file content
         image_bytes = await file.read()
-        
         # Preprocess the image
         image_array = preprocess_image(image_bytes)
-        
         # Load t
         model = load_model()
-        
         # Do the prediction
         result = predict(image_array, model)
-        
         return result
         
     except HTTPException:

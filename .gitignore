@@ -7,4 +7,3 @@ __pycache__/
 *.pyw
 *.pyz
 *.pywz
-data/raw/MNIST/raw/

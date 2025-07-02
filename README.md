@@ -1,5 +1,7 @@
 # Rapport du TP - Machine Learning
 
+>Ce TP a été réalisé avec [Alan Garnier](https://github.com/AlanGarnier)
+
 ## Objectif du TP
 
 Entraîner un modèle de deep learning sur le jeu de données MNIST, créer une route FastAPI pour exposer la prédiction, et développer une interface simple permettant d’écrire un chiffre à la main pour obtenir une prédiction du modèle.

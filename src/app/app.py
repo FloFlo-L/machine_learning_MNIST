@@ -51,6 +51,8 @@ with col1:
         key="canvas",
     )
 
+img = None
+    
 with col2:
     st.markdown("**Preview 28x28**")
     if canvas_result.image_data is not None:

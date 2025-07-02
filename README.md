@@ -8,7 +8,7 @@ Entraîner un modèle de deep learning sur le jeu de données MNIST, créer une 
 
 ## Structure du projet
 
-Le projet est organisé de la manière suivante :
+Le projet est organisé de la manière suivante, en suivant les règles du MLOPS de niveau 2 :
 
 - **notebook/load_mnist.py** : Script qui sert à charger le dataset MNIST et à afficher une image contenant un exemple de chaque chiffre de 0 à 9. Il permet de visualiser un petit aperçu des données utilisées pour l'entraînement.
 - **src/**
@@ -19,6 +19,15 @@ Le projet est organisé de la manière suivante :
 - **data/** : données MNIST utilisées pour entraîner le model.
 - **requirements.txt** : Liste des dépendances Python nécessaires pour le projet (`torch, streamlit, fastapi, etc.`).
 
+## Récap de la structure MLOPS de niveau 2
+
+```
+├── notebook/     <- fichiers exploratoires
+├── src/
+│   ├── model/    <- Code d'entraînement du modèle
+│   └── app/      <- application streamlit et route api
+└── model/        <- Modèle ConvNet
+```
 
 ## Apperçu de l'interface de l'application
 
